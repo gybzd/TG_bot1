@@ -1,9 +1,9 @@
 ##Flask==2.0.1
 ##python-telegram-bot==13.7
 
-python-telegram-bot==20.3
-Pillow==9.4.0
-httpx==0.24.1
-urllib3==1.26.15  # Ensure this specific version is compatible
-six==1.16.0  # The `six` library is often required by older compatibility layers
 
+python-telegram-bot==20.3
+Pillow==10.0.0
+httpx==0.24.1
+urllib3==1.26.15
+six==1.16.0
