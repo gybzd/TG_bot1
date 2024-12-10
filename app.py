@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import logging
-import threading
 import asyncio
 import os
 from telegram import __version__ as TG_VER, ForceReply, Update
@@ -55,27 +54,21 @@ async def stylize(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     with open('styled_text.png', 'rb') as photo:
         await update.message.reply_photo(photo=photo)
 
-# Function to start the bot
-def run_bot():
+# Function to run the bot
+async def run_bot():
     application = Application.builder().token(TOKEN).build()
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, stylize))
 
-    # Run the event loop explicitly
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    loop.run_until_complete(application.run_polling(allowed_updates=Update.ALL_TYPES))
+    # Run polling without signal handlers
+    await application.run_polling(allowed_updates=Update.ALL_TYPES)
 
 # Main function
 def main():
-    # Start bot in a background thread
-    bot_thread = threading.Thread(target=run_bot, daemon=True)
-    bot_thread.start()
-    logger.info("Bot started in a separate thread.")
-
-    # Placeholder for main app (e.g., Streamlit UI)
-    print("Main application running. Bot is live.")
+    logger.info("Starting bot...")
+    # Run the bot in an asyncio-compatible manner
+    asyncio.run(run_bot())
 
 if __name__ == "__main__":
     main()
