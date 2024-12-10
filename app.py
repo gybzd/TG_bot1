@@ -48,13 +48,19 @@ async def stylize(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     with open('styled_text.png', 'rb') as photo:
         await update.message.reply_photo(photo=photo)
 
+from config import Config
+
 def main() -> None:
     """Start the bot."""
     application = Application.builder().token(my_bot_token).build()
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, stylize))
-    application.run_polling(allowed_updates=Update.ALL_TYPES)
+    
+    # Detect hosting and configure
+    hosting = "streamlit"  # Change this to "replit" for Replit hosting
+    config = Config(hosting)
+    config.run_application(application)
 
 if __name__ == "__main__":
     main()
