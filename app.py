@@ -13,7 +13,14 @@ from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandl
 from PIL import Image, ImageDraw, ImageFont
 import os
 
-my_bot_token = os.environ['TOKEN']  # Environment variable for the bot token
+# Helper to retrieve environment variables
+def get_token():
+    if os.environ.get("HOSTING") == "replit":
+        return os.environ["TOKEN"]
+    elif os.environ.get("HOSTING") == "streamlit":
+        return st.secrets["TOKEN"]
+    else:
+        raise RuntimeError("HOSTING environment variable not set or invalid!")
 
 # Enable logging
 logging.basicConfig(
