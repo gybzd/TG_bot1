@@ -55,21 +55,26 @@ async def stylize(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     with open('styled_text.png', 'rb') as photo:
         await update.message.reply_photo(photo=photo)
 
-# Run the bot in a separate thread
+# Function to start the bot
 def run_bot():
     application = Application.builder().token(TOKEN).build()
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, stylize))
-    asyncio.run(application.run_polling(allowed_updates=Update.ALL_TYPES))
+
+    # Run the event loop explicitly
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(application.run_polling(allowed_updates=Update.ALL_TYPES))
 
 # Main function
 def main():
+    # Start bot in a background thread
     bot_thread = threading.Thread(target=run_bot, daemon=True)
     bot_thread.start()
     logger.info("Bot started in a separate thread.")
 
-    # Placeholder for your main application (e.g., Streamlit UI)
+    # Placeholder for main app (e.g., Streamlit UI)
     print("Main application running. Bot is live.")
 
 if __name__ == "__main__":
