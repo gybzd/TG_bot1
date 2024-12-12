@@ -7,7 +7,7 @@ import streamlit as st
 def get_token():
     if os.environ.get("HOSTING") == "replit":
         return os.environ["TOKEN"]
-    elif os.environ.get("HOSTING") == "streamlit":
+    elif os.getenv("HOSTING") == "streamlit":
         return st.secrets["TOKEN"]
     else:
         raise RuntimeError("HOSTING environment variable not set or invalid!")
