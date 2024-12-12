@@ -8,5 +8,5 @@ httpx==0.24.1
 urllib3==1.26.15
 six==1.16.0
 
-python-dotenv
+python-dotenv==1.0.1
 #for secret managements & deployment on streamlit
