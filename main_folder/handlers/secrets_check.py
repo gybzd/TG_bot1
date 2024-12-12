@@ -8,9 +8,12 @@ load_dotenv()
 # Retrieve secrets
 api_key = os.getenv("API_KEY", "No API Key Found")
 db_password = os.getenv("DB_PASSWORD", "No DB Password Found")
+hosting = os.getenv("HOSTING", "No Environment Variable Found")
 zalupa1 = os.getenv("zalupa1", "No Environment Variable Found")
+
 
 # Display secrets for testing (avoid in production)
 st.write("API Key:", api_key)
 st.write("DB Password:", db_password)
+st.write("HOSTING:", hosting)
 st.write("zalupa1:", zalupa1)
