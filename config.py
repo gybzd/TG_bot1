@@ -22,6 +22,15 @@ def get_token():
     else:
         raise RuntimeError(f"Invalid or missing HOSTING environment variable! Current value: {hosting}")
 
+# helper to retrieve DB variables
+def get_database_url():
+    hosting = os.getenv("HOSTING", "No Environment Variable Found")
+    db_path = os.getenv("DB_PATH", "sqlite:///./default.db")
+    print(f"HOSTING: {hosting}, DB_PATH: {db_path}")  # Debug output
+    if hosting == "streamlit":
+        return db_path  # SQLite database path
+    else:
+        raise RuntimeError(f"Invalid or missing HOSTING environment variable for database! Current value: {hosting}")
 
 # Helper to run the bot
 def run_asyncio_bot(application):
