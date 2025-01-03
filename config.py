@@ -29,11 +29,18 @@ def run_asyncio_bot(application):
     if hosting == "replit":
         asyncio.run(application.run_polling(allowed_updates=["message"]))
     elif hosting == "streamlit":
+        # For Streamlit, run the bot in a separate thread without signal handlers
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
+
+        async def start_polling():
+            await application.initialize()
+            await application.start()
+            await application.updater.start_polling(allowed_updates=["message"])
+
+        # Threaded execution
         thread = threading.Thread(
-            target=loop.run_until_complete,
-            args=(application.run_polling(allowed_updates=["message"]),),
+            target=lambda: loop.run_until_complete(start_polling()),
             daemon=True
         )
         thread.start()
