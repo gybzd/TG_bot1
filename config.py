@@ -34,9 +34,15 @@ def run_asyncio_bot(application):
         asyncio.set_event_loop(loop)
 
         async def start_polling():
-            await application.initialize()
-            await application.start()
-            await application.updater.start_polling(allowed_updates=["message"])
+            await application.initialize()  # Initialize the bot
+            await application.start()       # Start the bot
+            try:
+                await application.updater.start_polling(allowed_updates=["message"])
+                await asyncio.Event().wait()  # Keep the loop running
+            finally:
+                await application.updater.stop()
+                await application.stop()
+                await application.shutdown()
 
         # Threaded execution
         thread = threading.Thread(
